@@ -27,6 +27,7 @@
         "ssi_m2o_configurator_mixin",
         "base_duration",
         "ssi_financial_accounting",
+        "ssi_localdict_mixin",
     ],
     "data": [
         "security/ir_module_category_data.xml",
