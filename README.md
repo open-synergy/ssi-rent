@@ -14,7 +14,12 @@ ssi-rent
 
 [//]: # (addons)
 
-This part will be replaced when running the oca-gen-addons-table script from OCA/maintainer-tools.
+Available addons
+----------------
+addon | version | maintainers | summary
+--- | --- | --- | ---
+[ssi_customer_rent](ssi_customer_rent/) | 14.0.1.0.0 |  | Customer Rent
+[ssi_rent](ssi_rent/) | 14.0.1.0.0 |  | Rent Management
 
 [//]: # (end addons)
 
