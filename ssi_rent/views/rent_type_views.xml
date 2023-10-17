@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright 2022 OpenSynergy Indonesia
+     Copyright 2022 PT. Simetri Sinergi Indonesia
+     License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl). -->
+<odoo>
+<record id="rent_type_view_search" model="ir.ui.view">
+    <field name="name">rent_type - search</field>
+    <field name="model">rent_type</field>
+    <field
+            name="inherit_id"
+            ref="ssi_master_data_mixin.mixin_master_data_view_search"
+        />
+    <field name="mode">primary</field>
+    <field name="arch" type="xml">
+        <data />
+    </field>
+</record>
+
+<record id="rent_type_view_tree" model="ir.ui.view">
+    <field name="name">rent_type - tree</field>
+    <field name="model">rent_type</field>
+    <field name="inherit_id" ref="ssi_master_data_mixin.mixin_master_data_view_tree" />
+    <field name="mode">primary</field>
+    <field name="arch" type="xml">
+        <data />
+    </field>
+</record>
+
+<record id="rent_type_view_form" model="ir.ui.view">
+    <field name="name">rent_type - form</field>
+    <field name="model">rent_type</field>
+    <field name="inherit_id" ref="ssi_master_data_mixin.mixin_master_data_view_form" />
+    <field name="mode">primary</field>
+    <field name="arch" type="xml">
+        <data>
+            <xpath expr="//page[1]" position="before">
+                <page name="product" string="Product">
+                    <group name="product_1" col="2" colspan="4" string="Product">
+                        <field name="product_selection_method" />
+                        <field
+                                name="product_ids"
+                                attrs="{'invisible':[('product_selection_method','!=','manual')]}"
+                            />
+                        <field
+                                name="product_domain"
+                                widget="domain"
+                                options="{'model': 'product.product', 'in_dialog': True}"
+                                attrs="{'invisible':[('product_selection_method','!=','domain')]}"
+                            />
+                        <field
+                                name="product_python_code"
+                                widget="ace"
+                                attrs="{'invisible':[('product_selection_method','!=','code')]}"
+                            />
+                    </group>
+                </page>
+                <page name="currency" string="Currencies &amp; Pricelist">
+                    <group name="currency_1" col="2" colspan="4" string="Currencies">
+                        <field name="currency_selection_method" />
+                        <field
+                                name="currency_ids"
+                                attrs="{'invisible':[('currency_selection_method','!=','manual')]}"
+                            />
+                        <field
+                                name="currency_domain"
+                                widget="domain"
+                                options="{'model': 'res.currency', 'in_dialog': True}"
+                                attrs="{'invisible':[('currency_selection_method','!=','domain')]}"
+                            />
+                        <field
+                                name="currency_python_code"
+                                widget="ace"
+                                attrs="{'invisible':[('currency_selection_method','!=','code')]}"
+                            />
+                    </group>
+                    <group name="currency_2" col="2" colspan="4" string="Pricelists">
+                        <field name="pricelist_selection_method" />
+                        <field
+                                name="pricelist_ids"
+                                attrs="{'invisible':[('pricelist_selection_method','!=','manual')]}"
+                            />
+                        <field
+                                name="pricelist_domain"
+                                widget="domain"
+                                options="{'model': 'product.pricelist', 'in_dialog': True}"
+                                attrs="{'invisible':[('pricelist_selection_method','!=','domain')]}"
+                            />
+                        <field
+                                name="pricelist_python_code"
+                                widget="ace"
+                                attrs="{'invisible':[('pricelist_selection_method','!=','code')]}"
+                            />
+                    </group>
+                </page>
+                <page name="account" string="Accounting">
+                    <group name="account_1" col="2" colspan="4" string="Usage">
+                        <field name="usage_selection_method" />
+                        <field
+                                name="usage_ids"
+                                attrs="{'invisible':[('usage_selection_method','!=','manual')]}"
+                            />
+                        <field
+                                name="usage_domain"
+                                widget="domain"
+                                options="{'model': 'product.usage_type', 'in_dialog': True}"
+                                attrs="{'invisible':[('usage_selection_method','!=','domain')]}"
+                            />
+                        <field
+                                name="usage_python_code"
+                                widget="ace"
+                                attrs="{'invisible':[('usage_selection_method','!=','code')]}"
+                            />
+                    </group>
+                    <group
+                            name="account_2"
+                            col="2"
+                            colspan="4"
+                            string="Analytic Account"
+                        >
+                        <field name="analytic_account_selection_method" />
+                        <field
+                                name="analytic_account_ids"
+                                attrs="{'invisible':[('analytic_account_selection_method','!=','manual')]}"
+                            />
+                        <field
+                                name="analytic_account_domain"
+                                widget="domain"
+                                options="{'model': 'account.analytic.account', 'in_dialog': True}"
+                                attrs="{'invisible':[('analytic_account_selection_method','!=','domain')]}"
+                            />
+                        <field
+                                name="analytic_account_python_code"
+                                widget="ace"
+                                attrs="{'invisible':[('analytic_account_selection_method','!=','code')]}"
+                            />
+                    </group>
+                </page>
+            </xpath>
+        </data>
+    </field>
+</record>
+</odoo>

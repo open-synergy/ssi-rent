@@ -1,0 +1,238 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright 2022 OpenSynergy Indonesia
+     Copyright 2022 PT. Simetri Sinergi Indonesia
+     License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl). -->
+<odoo>
+<record id="rent_order_view_search" model="ir.ui.view">
+    <field name="name">rent_order - search</field>
+    <field name="model">rent_order</field>
+    <field
+            name="inherit_id"
+            ref="ssi_transaction_mixin.mixin_transaction_view_search"
+        />
+    <field name="mode">primary</field>
+    <field name="arch" type="xml">
+        <data>
+        </data>
+    </field>
+</record>
+
+<record id="rent_order_view_tree" model="ir.ui.view">
+    <field name="name">rent_order - tree</field>
+    <field name="model">rent_order</field>
+    <field name="mode">primary</field>
+    <field name="inherit_id" ref="ssi_transaction_mixin.mixin_transaction_view_tree" />
+    <field name="arch" type="xml">
+        <data>
+            <xpath expr="//field[@name='company_id']" position="after">
+                <field name="partner_id" widget="many2one_avatar" />
+                <field
+                        name="contact_partner_id"
+                        widget="many2one_avatar"
+                        optional="hide"
+                    />
+                <field name="date" />
+                <field name="date_start" />
+                <field name="date_end" />
+                <field name="type_id" />
+                <field name="product_id" />
+                <field name="period_type" />
+            </xpath>
+        </data>
+    </field>
+</record>
+
+<record id="rent_order_view_form" model="ir.ui.view">
+    <field name="name">rent_order - form</field>
+    <field name="model">rent_order</field>
+    <field name="mode">primary</field>
+    <field name="inherit_id" ref="ssi_transaction_mixin.mixin_transaction_view_form" />
+    <field name="arch" type="xml">
+        <data>
+            <xpath expr="//field[@name='user_id']" position="after">
+                <field name="partner_id" widget="many2one_avatar" />
+                <field
+                        name="allowed_contact_ids"
+                        widget="many2many_tags"
+                        invisible="1"
+                    />
+                <field
+                        name="contact_partner_id"
+                        domain="[('id','in',allowed_contact_ids)]"
+                        widget="many2one_avatar"
+                    />
+            </xpath>
+            <xpath expr="//group[@name='header_right']" position="inside">
+                <field name="type_id" />
+                <field name="date" />
+                <field name="date_start" />
+                <field name="date_end" />
+                <label for="yearly_period" string="Period" />
+                <div>
+                    <field name="yearly_period" />
+                    Year(s)
+                    <field name="monthly_period" />
+                    Month(s)
+                    <field name="daily_period" />
+                    Day(s)
+                </div>
+
+            </xpath>
+            <xpath expr="//page[1]" position="before">
+                <page name="rent_object" string="Rent Object">
+                    <group name="rent_object_1" colspan="4" col="2">
+                        <group name="rent_object_1_1" colspan="1" col="2">
+                            <field
+                                    name="allowed_currency_ids"
+                                    widget="many2many_tags"
+                                    invisible="1"
+                                />
+                            <field
+                                    name="currency_id"
+                                    domain="[('id','in',allowed_currency_ids)]"
+                                />
+                            <field
+                                    name="allowed_pricelist_ids"
+                                    widget="many2many_tags"
+                                    invisible="1"
+                                />
+                            <field
+                                    name="pricelist_id"
+                                    domain="[('id','in',allowed_pricelist_ids),('currency_id','=',currency_id)]"
+                                />
+                            <field
+                                    name="allowed_product_ids"
+                                    widget="many2many_tags"
+                                    invisible="1"
+                                />
+                            <field
+                                    name="product_id"
+                                    domain="[('id','in',allowed_product_ids)]"
+                                />
+                            <field
+                                    name="allowed_usage_ids"
+                                    widget="many2many_tags"
+                                    invisible="1"
+                                />
+                            <field
+                                    name="usage_id"
+                                    domain="[('id','in',allowed_usage_ids)]"
+                                />
+                            <field name="account_id" />
+                            <field
+                                    name="allowed_analytic_account_ids"
+                                    widget="many2many_tags"
+                                    invisible="1"
+                                />
+                            <field
+                                    name="analytic_account_id"
+                                    domain="[('id','in',allowed_analytic_account_ids)]"
+                                />
+                        </group>
+                        <group name="rent_object_1_2" colspan="1" col="2">
+                            <field name="price_unit" />
+                            <field name="price_subtotal" />
+                            <field name="tax_ids" widget="many2many_tags" />
+                            <field name="price_tax" />
+                            <field name="price_total" />
+                        </group>
+                    </group>
+                </page>
+                <page name="payment_schedule" string="Payment Schedule">
+                    <button
+                            name="action_create_payment_schedule"
+                            string="Create Payment Schedule"
+                            type="object"
+                            class="oe_highlight"
+                            icon="fa-gear"
+                            attrs="{'invisible':[('state','!=','draft')]}"
+                        />
+                    <group name="payment_schedule_1" colspan="4" col="2">
+                        <group name="payment_schedule_1_1" colspan="1" col="2">
+                            <field name="recurring_interval" />
+                            <field name="period_type" />
+                            <field name="invoice_number" />
+                        </group>
+                        <group name="payment_schedule_1_2" colspan="1" col="2">
+                            <field name="invoice_computation_method" />
+                            <field name="date_invoice_offset" />
+                            <field name="payment_term_id" />
+                            <field name="invoice_method" />
+                            <field name="journal_id" />
+                        </group>
+                    </group>
+                    <field name="payment_schedule_ids" colspan="2" nolabel="1">
+                        <tree>
+                            <field name="date_start" />
+                            <field name="date_end" />
+                            <field name="invoice_id" />
+                            <field name="date_invoice" />
+                            <field name="date_due" />
+                            <field name="no_invoice" />
+                            <field name="manual" />
+                            <field name="currency_id" invisible="1" />
+                            <field name="amount_untaxed" optional="hide" />
+                            <field name="amount_tax" optional="hide" />
+                            <field name="amount_total" />
+                            <field name="residual" optional="hide" />
+                            <field name="state" />
+                            <button
+                                    name="action_create_invoice"
+                                    help="Create Invoice"
+                                    type="object"
+                                    icon="fa-cogs"
+                                    states="uninvoiced"
+                                />
+                            <button
+                                    name="action_mark_as_free"
+                                    help="Mark as Free"
+                                    type="object"
+                                    icon="fa-check"
+                                    states="uninvoiced"
+                                />
+                            <button
+                                    name="action_manually_controlled"
+                                    help="Manually Controlled"
+                                    type="object"
+                                    icon="fa-circle-o"
+                                    states="uninvoiced"
+                                />
+                            <button
+                                    name="action_delete_invoice"
+                                    help="Delete Invoice"
+                                    type="object"
+                                    icon="fa-eraser"
+                                    states="invoiced"
+                                />
+
+                            <button
+                                    name="action_disconnect_invoice"
+                                    help="Disconnect Invoice"
+                                    type="object"
+                                    icon="fa-unlink"
+                                    states="invoiced"
+                                />
+                            <button
+                                    name="action_mark_as_must_pay"
+                                    help="Mark as Must Pay"
+                                    type="object"
+                                    icon="fa-times"
+                                    states="free"
+                                />
+                            <button
+                                    name="action_no_manual"
+                                    help="Controlled"
+                                    type="object"
+                                    icon="fa-check-circle-o"
+                                    states="manual"
+                                />
+
+                        </tree>
+                    </field>
+                </page>
+            </xpath>
+        </data>
+    </field>
+</record>
+
+</odoo>

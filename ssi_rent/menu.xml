@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright 2022 OpenSynergy Indonesia
+     Copyright 2022 PT. Simetri Sinergi Indonesia
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl). -->
+<odoo>
+<menuitem
+        id="menu_root_rent"
+        name="Rent"
+        web_icon="ssi_rent,static/description/icon.png"
+    />
+
+<menuitem
+        id="menu_rent_reporting"
+        name="Reporting"
+        parent="menu_root_rent"
+        sequence="998"
+    />
+
+<menuitem
+        id="menu_rent_configuration"
+        name="Configuration"
+        parent="menu_root_rent"
+        sequence="999"
+    />
+
+
+
+</odoo>
