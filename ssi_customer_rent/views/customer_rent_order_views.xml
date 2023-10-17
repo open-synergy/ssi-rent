@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright 2022 OpenSynergy Indonesia
+     Copyright 2022 PT. Simetri Sinergi Indonesia
+     License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl). -->
+<odoo>
+<record id="customer_rent_order_view_search" model="ir.ui.view">
+    <field name="name">customer_rent_order - search</field>
+    <field name="model">customer_rent_order</field>
+    <field name="inherit_id" ref="ssi_rent.rent_order_view_search" />
+    <field name="mode">primary</field>
+    <field name="arch" type="xml">
+        <data>
+        </data>
+    </field>
+</record>
+
+<record id="customer_rent_order_view_tree" model="ir.ui.view">
+    <field name="name">customer_rent_order - tree</field>
+    <field name="model">customer_rent_order</field>
+    <field name="mode">primary</field>
+    <field name="inherit_id" ref="ssi_rent.rent_order_view_tree" />
+    <field name="arch" type="xml">
+        <data>
+        </data>
+    </field>
+</record>
+
+<record id="customer_rent_order_view_form" model="ir.ui.view">
+    <field name="name">customer_rent_order - form</field>
+    <field name="model">customer_rent_order</field>
+    <field name="mode">primary</field>
+    <field name="inherit_id" ref="ssi_rent.rent_order_view_form" />
+    <field name="arch" type="xml">
+        <data>
+        </data>
+    </field>
+</record>
+
+<record id="customer_rent_order_action" model="ir.actions.act_window">
+    <field name="name">Customer Rent Orders</field>
+    <field name="type">ir.actions.act_window</field>
+    <field name="res_model">customer_rent_order</field>
+    <field name="view_mode">tree,form</field>
+</record>
+
+<menuitem
+        id="customer_rent_order_menu"
+        name="Customer Rent Orders"
+        parent="ssi_rent.menu_root_rent"
+        action="customer_rent_order_action"
+        groups="customer_rent_order_viewer_group"
+        sequence="110"
+    />
+</odoo>

@@ -1,0 +1,9 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_customer_rent_type_configurator,customer_rent_type - configurator,model_customer_rent_type,customer_rent_type_group,1,1,1,1
+access_customer_rent_type_all,customer_rent_type - all user,model_customer_rent_type,,1,0,0,0
+access_customer_rent_order_all,customer_rent_order - all,model_customer_rent_order,,1,0,0,0
+access_customer_rent_order_viewer,customer_rent_order - viewer,model_customer_rent_order,customer_rent_order_viewer_group,1,0,0,0
+access_customer_rent_order_user,customer_rent_order - user,model_customer_rent_order,customer_rent_order_user_group,1,1,1,1
+access_customer_rent_order_payment_schedule_all,customer_rent_order_payment_schedule - all,model_customer_rent_order_payment_schedule,,1,0,0,0
+access_customer_rent_order_payment_schedule_viewer,customer_rent_order_payment_schedule - viewer,model_customer_rent_order_payment_schedule,customer_rent_order_viewer_group,1,0,0,0
+access_customer_rent_order_payment_schedule_user,customer_rent_order_payment_schedule - user,model_customer_rent_order_payment_schedule,customer_rent_order_user_group,1,1,1,1
