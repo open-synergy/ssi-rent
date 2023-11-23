@@ -132,13 +132,18 @@
                         <group name="rent_object_1_2" colspan="1" col="2">
                             <field name="price_unit" />
                             <field name="price_subtotal" />
+                            <field name="need_payment" invisible="1" />
                             <field name="tax_ids" widget="many2many_tags" />
                             <field name="price_tax" />
                             <field name="price_total" />
                         </group>
                     </group>
                 </page>
-                <page name="payment_schedule" string="Payment Schedule">
+                <page
+                        name="payment_schedule"
+                        string="Payment Schedule"
+                        attrs="{'invisible': [('need_payment','=',False)]}"
+                    >
                     <button
                             name="action_create_payment_schedule"
                             string="Create Payment Schedule"
@@ -149,16 +154,40 @@
                         />
                     <group name="payment_schedule_1" colspan="4" col="2">
                         <group name="payment_schedule_1_1" colspan="1" col="2">
-                            <field name="recurring_interval" />
-                            <field name="period_type" />
-                            <field name="invoice_number" />
+                            <field
+                                    name="recurring_interval"
+                                    attrs="{'required':[('need_payment','=',True)]}"
+                                />
+                            <field
+                                    name="period_type"
+                                    attrs="{'required':[('need_payment','=',True)]}"
+                                />
+                            <field
+                                    name="invoice_number"
+                                    attrs="{'required':[('need_payment','=',True)]}"
+                                />
                         </group>
                         <group name="payment_schedule_1_2" colspan="1" col="2">
-                            <field name="invoice_computation_method" />
-                            <field name="date_invoice_offset" />
-                            <field name="payment_term_id" />
-                            <field name="invoice_method" />
-                            <field name="journal_id" />
+                            <field
+                                    name="invoice_computation_method"
+                                    attrs="{'required':[('need_payment','=',True)]}"
+                                />
+                            <field
+                                    name="date_invoice_offset"
+                                    attrs="{'required':[('need_payment','=',True)]}"
+                                />
+                            <field
+                                    name="payment_term_id"
+                                    attrs="{'required':[('need_payment','=',True)]}"
+                                />
+                            <field
+                                    name="invoice_method"
+                                    attrs="{'required':[('need_payment','=',True)]}"
+                                />
+                            <field
+                                    name="journal_id"
+                                    attrs="{'required':[('need_payment','=',True)]}"
+                                />
                         </group>
                     </group>
                     <field name="payment_schedule_ids" colspan="2" nolabel="1">
