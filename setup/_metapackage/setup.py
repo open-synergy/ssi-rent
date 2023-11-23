@@ -9,7 +9,9 @@ setuptools.setup(
     version=version,
     install_requires=[
         'odoo14-addon-ssi_customer_rent',
+        'odoo14-addon-ssi_customer_rent_stock',
         'odoo14-addon-ssi_rent',
+        'odoo14-addon-ssi_rent_stock',
     ],
     classifiers=[
         'Programming Language :: Python',
