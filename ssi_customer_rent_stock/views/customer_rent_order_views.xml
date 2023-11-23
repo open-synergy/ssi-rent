@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright 2022 OpenSynergy Indonesia
+     Copyright 2022 PT. Simetri Sinergi Indonesia
+     License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl). -->
+<odoo>
+<record id="customer_rent_order_view_form" model="ir.ui.view">
+    <field name="name">customer_rent_order - form</field>
+    <field name="model">customer_rent_order</field>
+    <field name="mode">extension</field>
+    <field name="inherit_id" ref="ssi_customer_rent.customer_rent_order_view_form" />
+    <field name="arch" type="xml">
+        <data>
+            <xpath expr="//field[@name='product_id']" position="after">
+                <field name="need_inventory_setting" invisible="1" />
+                <field name="need_lot" invisible="1" />
+            </xpath>
+            <xpath expr="//page[@name='payment_schedule']" position="after">
+                <page
+                        name="inventory"
+                        string="Inventory"
+                        attrs="{'invisible':[('need_inventory_setting','=',False)]}"
+                    >
+                    <button
+                            name="action_create_reception"
+                            type="object"
+                            string="Create Reception"
+                            class="oe_highlight"
+                            icon="fa-sign-in"
+                            attrs="{'invisible':[('create_reception_ok','=',False)]}"
+                            style="margin-right:4px"
+                        />
+                    <button
+                            name="action_create_delivery"
+                            type="object"
+                            string="Create Delivery"
+                            class="oe_highlight"
+                            icon="fa-sign-out"
+                            attrs="{'invisible':[('create_delivery_ok','=',False)]}"
+                        />
+                    <group name="inventory_2" colspan="4" col="2">
+                        <field name="procurement_group_id" />
+                        <field name="create_reception_ok" invisible="1" />
+                        <field name="create_delivery_ok" invisible="1" />
+                        <field name="qty_to_receive" />
+                        <field name="qty_incoming" />
+                        <field name="qty_received" />
+                        <field name="qty_to_deliver" />
+                        <field name="qty_outgoing" />
+                        <field name="qty_delivered" />
+                    </group>
+                    <group name="inventory_1" colspan="4" col="2">
+                        <group
+                                name="inventory_1_1"
+                                string="Outbound"
+                                colspan="1"
+                                col="2"
+                            >
+                            <field
+                                    name="allowed_outbound_warehouse_ids"
+                                    widget="many2many_tags"
+                                    invisible="1"
+                                />
+                            <field
+                                    name="outbound_warehouse_id"
+                                    domain="[('id','in',allowed_outbound_warehouse_ids)]"
+                                    attrs="{'required':[('need_inventory_setting','=',True)]}"
+                                />
+                            <field
+                                    name="allowed_outbound_route_ids"
+                                    widget="many2many_tags"
+                                    invisible="1"
+                                />
+                            <field
+                                    name="outbound_route_id"
+                                    domain="[('id','in',allowed_outbound_route_ids),('warehouse_ids','in',outbound_warehouse_id)]"
+                                    attrs="{'required':[('need_inventory_setting','=',True)]}"
+                                />
+                            <field
+                                    name="allowed_outbound_location_ids"
+                                    widget="many2many_tags"
+                                    invisible="1"
+                                />
+                            <field
+                                    name="outbound_location_id"
+                                    domain="[('id','in',allowed_outbound_location_ids),('warehouse_id','=',outbound_warehouse_id)]"
+                                    attrs="{'required':[('need_inventory_setting','=',True)]}"
+                                />
+                        </group>
+                        <group
+                                name="inventory_1_2"
+                                string="Inbound"
+                                colspan="1"
+                                col="2"
+                            >
+                            <field
+                                    name="allowed_inbound_warehouse_ids"
+                                    widget="many2many_tags"
+                                    invisible="1"
+                                />
+                            <field
+                                    name="inbound_warehouse_id"
+                                    domain="[('id','in',allowed_inbound_warehouse_ids)]"
+                                    attrs="{'required':[('need_inventory_setting','=',True)]}"
+                                />
+                            <field
+                                    name="allowed_inbound_route_ids"
+                                    widget="many2many_tags"
+                                    invisible="1"
+                                />
+                            <field
+                                    name="inbound_route_id"
+                                    domain="[('id','in',allowed_inbound_route_ids),('warehouse_ids','in',inbound_warehouse_id)]"
+                                    attrs="{'required':[('need_inventory_setting','=',True)]}"
+                                />
+                            <field
+                                    name="allowed_inbound_location_ids"
+                                    widget="many2many_tags"
+                                    invisible="1"
+                                />
+                            <field
+                                    name="inbound_location_id"
+                                    domain="[('id','in',allowed_inbound_location_ids),('warehouse_id','=',inbound_warehouse_id)]"
+                                    attrs="{'required':[('need_inventory_setting','=',True)]}"
+                                />
+                        </group>
+                    </group>
+                    <group
+                            name="inventory_3"
+                            colspan="4"
+                            col="2"
+                            attrs="{'invisible':[('need_lot','=',False)]}"
+                        >
+                        <field
+                                name="allowed_lot_ids"
+                                widget="many2many_tags"
+                                invisible="1"
+                            />
+                        <field name="lot_id" domain="[('id','in',allowed_lot_ids)]" />
+                    </group>
+                    <field name="stock_move_ids" />
+                </page>
+            </xpath>
+        </data>
+    </field>
+</record>
+</odoo>
