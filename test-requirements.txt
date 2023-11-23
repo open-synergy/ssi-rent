@@ -1,0 +1,4 @@
+git+https://github.com/open-synergy/ssi-stock@14.0#subdirectory=setup/ssi_stock_location_m2o_configurator_mixin
+git+https://github.com/open-synergy/ssi-stock@14.0#subdirectory=setup/ssi_stock_route_m2o_configurator_mixin
+git+https://github.com/open-synergy/ssi-stock@14.0#subdirectory=setup/ssi_stock_warehouse_m2o_configurator_mixin
+git+https://github.com/open-synergy/ssi-stock@14.0#subdirectory=setup/ssi_stock_rent_operation
