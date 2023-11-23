@@ -18,8 +18,8 @@ Available addons
 ----------------
 addon | version | maintainers | summary
 --- | --- | --- | ---
-[ssi_customer_rent](ssi_customer_rent/) | 14.0.1.0.0 |  | Customer Rent
-[ssi_rent](ssi_rent/) | 14.0.1.0.0 |  | Rent Management
+[ssi_customer_rent](ssi_customer_rent/) | 14.0.2.0.0 |  | Customer Rent
+[ssi_rent](ssi_rent/) | 14.0.2.0.0 |  | Rent Management
 
 [//]: # (end addons)
 
