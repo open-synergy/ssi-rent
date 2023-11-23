@@ -6,20 +6,22 @@ from dateutil.relativedelta import relativedelta
 
 from odoo import api, fields, models
 
+from odoo.addons.ssi_decorator import ssi_decorator
+
 
 class RentOrder(models.AbstractModel):
     _name = "rent_order"
     _inherit = [
-        "mixin.transaction_confirm",
-        "mixin.transaction_ready",
-        "mixin.transaction_open",
         "mixin.transaction_done",
         "mixin.transaction_cancel",
         "mixin.transaction_terminate",
+        "mixin.transaction_open",
+        "mixin.transaction_ready",
+        "mixin.transaction_confirm",
         "mixin.transaction_partner_contact_required",
         "mixin.localdict",
         "mixin.product_line_account",
-        "mixin.date_duration",
+        "mixin.transaction_date_duration",
         "mixin.many2one_configurator",
         "mixin.transaction_pricelist",
     ]
@@ -97,6 +99,46 @@ class RentOrder(models.AbstractModel):
             ],
         },
     )
+    usage_id = fields.Many2one(
+        readonly=True,
+        states={
+            "draft": [
+                ("readonly", False),
+            ],
+        },
+    )
+    account_id = fields.Many2one(
+        readonly=True,
+        states={
+            "draft": [
+                ("readonly", False),
+            ],
+        },
+    )
+    analytic_account_id = fields.Many2one(
+        readonly=True,
+        states={
+            "draft": [
+                ("readonly", False),
+            ],
+        },
+    )
+    price_unit = fields.Monetary(
+        readonly=True,
+        states={
+            "draft": [
+                ("readonly", False),
+            ],
+        },
+    )
+    tax_ids = fields.Many2many(
+        readonly=True,
+        states={
+            "draft": [
+                ("readonly", False),
+            ],
+        },
+    )
     date = fields.Date(
         string="Date",
         required=True,
@@ -126,14 +168,19 @@ class RentOrder(models.AbstractModel):
             ("daily", "Daily"),
         ],
         default="yearly",
-        required=True,
+        required=False,
         readonly=True,
         states={"draft": [("readonly", False)]},
+    )
+    need_payment = fields.Boolean(
+        string="Need Payment",
+        compute="_compute_need_payment",
+        store=True,
     )
     recurring_interval = fields.Integer(
         string="Recurring Interval",
         default=1,
-        required=True,
+        required=False,
         readonly=True,
         states={"draft": [("readonly", False)]},
     )
@@ -145,7 +192,7 @@ class RentOrder(models.AbstractModel):
     invoice_computation_method = fields.Selection(
         string="Invoice Computation",
         selection=[("offset", "Offset"), ("fixed", "Fixed Date")],
-        required=True,
+        required=False,
         readonly=True,
         states={
             "draft": [
@@ -161,7 +208,7 @@ class RentOrder(models.AbstractModel):
             ("arear", "Arear"),
         ],
         default="advance",
-        required=True,
+        required=False,
         readonly=True,
         states={
             "draft": [
@@ -181,7 +228,7 @@ class RentOrder(models.AbstractModel):
     payment_term_id = fields.Many2one(
         string="Invoice Payment Term",
         comodel_name="base.duration",
-        required=True,
+        required=False,
         readonly=False,
         states={
             "draft": [
@@ -192,7 +239,7 @@ class RentOrder(models.AbstractModel):
     journal_id = fields.Many2one(
         string="Journal",
         comodel_name="account.journal",
-        required=True,
+        required=False,
         readonly=False,
         states={
             "draft": [
@@ -240,21 +287,16 @@ class RentOrder(models.AbstractModel):
         store=False,
         compute_sudo=True,
     )
-    state = fields.Selection(
-        string="State",
-        selection=[
-            ("draft", "Draft"),
-            ("confirm", "Waiting for Approval"),
-            ("ready", "Ready to Start"),
-            ("open", "In Progress"),
-            ("done", "Done"),
-            ("cancel", "Cancelled"),
-            ("reject", "Rejected"),
-            ("terminate", "Terminated"),
-        ],
-        default="draft",
-        copy=False,
+
+    @api.depends(
+        "price_subtotal",
     )
+    def _compute_need_payment(self):
+        for record in self:
+            result = False
+            if record.price_subtotal > 0.0:
+                result = True
+            record.need_payment = result
 
     @api.depends(
         "date_start",
@@ -497,3 +539,9 @@ class RentOrder(models.AbstractModel):
             add = relativedelta(years=self.recurring_interval)
         date_end = date + add
         return date_end
+
+    @ssi_decorator.insert_on_form_view()
+    def _insert_form_element(self, view_arch):
+        if self._automatically_insert_view_element:
+            view_arch = self._reconfigure_statusbar_visible(view_arch)
+        return view_arch
