@@ -5,7 +5,7 @@
 <odoo>
 <menuitem
         id="menu_customer_rent_configuration"
-        name="Configuration"
+        name="Customer Rent"
         parent="ssi_rent.menu_rent_configuration"
         sequence="110"
     />
