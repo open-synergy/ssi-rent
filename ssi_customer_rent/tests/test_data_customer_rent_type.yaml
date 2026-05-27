@@ -1,0 +1,51 @@
+scenarios:
+  - name: "Customer Rent Type - Create and verify master data"
+    steps:
+      - step: "Create customer rent type"
+        action: "create"
+        model: "customer_rent_type"
+        save_as: "rent_type"
+        values:
+          name: "Test Customer Rent Type"
+          code: "TCRT001"
+
+      - step: "Assert rent type created"
+        action: "assert"
+        target: "rent_type"
+        asserts:
+          id:
+            type: "value"
+            operator: "is_truthy"
+          name:
+            type: "value"
+            expected: "Test Customer Rent Type"
+          code:
+            type: "value"
+            expected: "TCRT001"
+          active:
+            type: "value"
+            expected: true
+
+  - name: "Customer Rent Type - Archive and unarchive"
+    steps:
+      - step: "Create customer rent type for archive test"
+        action: "create"
+        model: "customer_rent_type"
+        save_as: "rent_type_archive"
+        values:
+          name: "Test Rent Type Archive"
+          code: "TCRTA01"
+
+      - step: "Archive the rent type"
+        action: "write"
+        target: "rent_type_archive"
+        values:
+          active: false
+
+      - step: "Assert rent type is archived"
+        action: "assert"
+        target: "rent_type_archive"
+        asserts:
+          active:
+            type: "value"
+            expected: false

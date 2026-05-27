@@ -1,0 +1,288 @@
+scenarios:
+  - name: "Customer Rent Order - Full Workflow: draft to done"
+    steps:
+      - step: "Create customer rent type"
+        action: "create"
+        model: "customer_rent_type"
+        save_as: "rent_type"
+        values:
+          name: "Test Rent Type Full"
+          code: "TRTF001"
+
+      - step: "Create partner"
+        action: "create"
+        model: "res.partner"
+        save_as: "partner"
+        values:
+          name: "Test Rent Partner"
+          is_company: true
+
+      - step: "Create income account"
+        action: "create"
+        model: "account.account"
+        save_as: "income_account"
+        values:
+          name: "Test Rent Income Account"
+          code: "TRIA001"
+          user_type_id: "REF: account.data_account_type_revenue"
+          internal_type: "other"
+
+      - step: "Create product category"
+        action: "create"
+        model: "product.category"
+        save_as: "product_category"
+        values:
+          name: "Test Rent Category"
+
+      - step: "Create product template"
+        action: "create"
+        model: "product.template"
+        save_as: "product_tmpl"
+        values:
+          name: "Test Rent Product"
+          categ_id: "EVAL: registry['product_category'].id"
+          type: "service"
+
+      - step: "Get product variant"
+        action: "search"
+        model: "product.product"
+        save_as: "product"
+        domain:
+          - ["product_tmpl_id", "=", "EVAL: registry['product_tmpl'].id"]
+        limit: 1
+
+      - step: "Create customer rent order"
+        action: "create"
+        model: "customer_rent_order"
+        save_as: "rent_order"
+        as_user: "base.user_admin"
+        values:
+          type_id: "EVAL: registry['rent_type'].id"
+          partner_id: "EVAL: registry['partner'].id"
+          contact_partner_id: "EVAL: registry['partner'].id"
+          product_id: "EVAL: registry['product'].id"
+          account_id: "EVAL: registry['income_account'].id"
+          date: "2024-01-01"
+          date_start: "2024-01-01"
+          date_end: "2025-01-01"
+          currency_id: "REF: base.USD"
+          pricelist_id: "REF: product.list0"
+          period_type: "yearly"
+          recurring_interval: 1
+          price_unit: 1000.0
+
+      - step: "Assert rent order created in draft"
+        action: "assert"
+        target: "rent_order"
+        asserts:
+          state:
+            type: "value"
+            expected: "draft"
+          need_payment:
+            type: "value"
+            expected: true
+
+      - step: "Confirm rent order"
+        action: "call"
+        target: "rent_order"
+        method: "action_confirm"
+        as_user: "base.user_admin"
+
+      - step: "Invalidate cache after confirm"
+        action: "call"
+        target: "rent_order"
+        method: "invalidate_cache"
+
+      - step: "Assert rent order in confirm state"
+        action: "assert"
+        target: "rent_order"
+        asserts:
+          state:
+            type: "value"
+            expected: "confirm"
+
+      - step: "Approve rent order"
+        action: "call"
+        target: "rent_order"
+        method: "action_approve_approval"
+        as_user: "base.user_admin"
+
+      - step: "Invalidate cache after approve"
+        action: "call"
+        target: "rent_order"
+        method: "invalidate_cache"
+
+      - step: "Assert rent order in ready state"
+        action: "assert"
+        target: "rent_order"
+        asserts:
+          state:
+            type: "value"
+            expected: "ready"
+
+      - step: "Open rent order"
+        action: "call"
+        target: "rent_order"
+        method: "action_open"
+        as_user: "base.user_admin"
+        context:
+          bypass_policy_check: true
+
+      - step: "Invalidate cache after open"
+        action: "call"
+        target: "rent_order"
+        method: "invalidate_cache"
+
+      - step: "Assert rent order in open state"
+        action: "assert"
+        target: "rent_order"
+        asserts:
+          state:
+            type: "value"
+            expected: "open"
+
+      - step: "Close (done) rent order"
+        action: "call"
+        target: "rent_order"
+        method: "action_done"
+        as_user: "base.user_admin"
+        context:
+          bypass_policy_check: true
+
+      - step: "Invalidate cache after done"
+        action: "call"
+        target: "rent_order"
+        method: "invalidate_cache"
+
+      - step: "Assert rent order in done state"
+        action: "assert"
+        target: "rent_order"
+        asserts:
+          state:
+            type: "value"
+            expected: "done"
+
+  - name: "Customer Rent Order - Cancel workflow"
+    steps:
+      - step: "Create customer rent type for cancel test"
+        action: "create"
+        model: "customer_rent_type"
+        save_as: "rent_type_c"
+        values:
+          name: "Test Rent Type Cancel"
+          code: "TRTC001"
+
+      - step: "Create partner for cancel test"
+        action: "create"
+        model: "res.partner"
+        save_as: "partner_c"
+        values:
+          name: "Test Rent Partner Cancel"
+          is_company: true
+
+      - step: "Create income account for cancel test"
+        action: "create"
+        model: "account.account"
+        save_as: "income_account_c"
+        values:
+          name: "Test Rent Income Account Cancel"
+          code: "TRICA01"
+          user_type_id: "REF: account.data_account_type_revenue"
+          internal_type: "other"
+
+      - step: "Create product template for cancel test"
+        action: "create"
+        model: "product.template"
+        save_as: "product_tmpl_c"
+        values:
+          name: "Test Rent Product Cancel"
+          type: "service"
+
+      - step: "Get product variant for cancel test"
+        action: "search"
+        model: "product.product"
+        save_as: "product_c"
+        domain:
+          - ["product_tmpl_id", "=", "EVAL: registry['product_tmpl_c'].id"]
+        limit: 1
+
+      - step: "Create rent order for cancel test"
+        action: "create"
+        model: "customer_rent_order"
+        save_as: "rent_order_c"
+        as_user: "base.user_admin"
+        values:
+          type_id: "EVAL: registry['rent_type_c'].id"
+          partner_id: "EVAL: registry['partner_c'].id"
+          contact_partner_id: "EVAL: registry['partner_c'].id"
+          product_id: "EVAL: registry['product_c'].id"
+          account_id: "EVAL: registry['income_account_c'].id"
+          date: "2024-01-01"
+          date_start: "2024-01-01"
+          date_end: "2025-01-01"
+          currency_id: "REF: base.USD"
+          pricelist_id: "REF: product.list0"
+          period_type: "yearly"
+          recurring_interval: 1
+          price_unit: 500.0
+
+      - step: "Assert rent order created in draft"
+        action: "assert"
+        target: "rent_order_c"
+        asserts:
+          state:
+            type: "value"
+            expected: "draft"
+
+      - step: "Confirm for cancel"
+        action: "call"
+        target: "rent_order_c"
+        method: "action_confirm"
+        as_user: "base.user_admin"
+
+      - step: "Invalidate cache after confirm for cancel"
+        action: "call"
+        target: "rent_order_c"
+        method: "invalidate_cache"
+
+      - step: "Cancel rent order"
+        action: "call"
+        target: "rent_order_c"
+        method: "action_cancel"
+        as_user: "base.user_admin"
+        context:
+          bypass_policy_check: true
+
+      - step: "Invalidate cache after cancel"
+        action: "call"
+        target: "rent_order_c"
+        method: "invalidate_cache"
+
+      - step: "Assert rent order is cancelled"
+        action: "assert"
+        target: "rent_order_c"
+        asserts:
+          state:
+            type: "value"
+            expected: "cancel"
+
+      - step: "Restart rent order"
+        action: "call"
+        target: "rent_order_c"
+        method: "action_restart"
+        as_user: "base.user_admin"
+        context:
+          bypass_policy_check: true
+
+      - step: "Invalidate cache after restart"
+        action: "call"
+        target: "rent_order_c"
+        method: "invalidate_cache"
+
+      - step: "Assert rent order back to draft"
+        action: "assert"
+        target: "rent_order_c"
+        asserts:
+          state:
+            type: "value"
+            expected: "draft"
