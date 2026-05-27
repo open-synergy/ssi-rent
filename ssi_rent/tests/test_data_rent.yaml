@@ -1,0 +1,17 @@
+scenarios:
+  - name: "Rent - Company Configuration Smoke Test"
+    steps:
+      - step: "Read company"
+        action: "search"
+        model: "res.company"
+        save_as: "company"
+        domain: []
+        limit: 1
+
+      - step: "Assert company exists"
+        action: "assert"
+        target: "company"
+        asserts:
+          id:
+            type: "value"
+            operator: "is_truthy"
