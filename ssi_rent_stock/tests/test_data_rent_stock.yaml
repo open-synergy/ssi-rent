@@ -1,0 +1,18 @@
+scenarios:
+  - name: "Rent Stock - Partner smoke test"
+    steps:
+      - step: "Read partner"
+        action: "search"
+        model: "res.partner"
+        save_as: "partner"
+        domain:
+          - ["is_company", "=", false]
+        limit: 1
+
+      - step: "Assert partner exists"
+        action: "assert"
+        target: "partner"
+        asserts:
+          id:
+            type: "value"
+            operator: "is_truthy"
