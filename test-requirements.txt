@@ -1,5 +1,5 @@
-git+https://github.com/open-synergy/ssi-stock@14.0#subdirectory=setup/ssi_stock_location_m2o_configurator_mixin
-git+https://github.com/open-synergy/ssi-stock@14.0#subdirectory=setup/ssi_stock_route_m2o_configurator_mixin
-git+https://github.com/open-synergy/ssi-stock@14.0#subdirectory=setup/ssi_stock_warehouse_m2o_configurator_mixin
-git+https://github.com/open-synergy/ssi-stock@14.0#subdirectory=setup/ssi_stock_rent_operation
+odoo14-addon-ssi-stock-location-m2o-configurator-mixin
+odoo14-addon-ssi-stock-route-m2o-configurator-mixin
+odoo14-addon-ssi-stock-warehouse-m2o-configurator-mixin
+odoo14-addon-ssi-stock-rent-operation
 odoo-yaml-test
