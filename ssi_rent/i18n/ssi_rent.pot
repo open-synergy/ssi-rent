@@ -385,6 +385,7 @@ msgstr ""
 
 #. module: ssi_rent
 #: model:ir.model.fields,field_description:ssi_rent.field_rent_order__date
+#: model_terms:ir.ui.view,arch_db:ssi_rent.rent_order_view_search
 msgid "Date"
 msgstr ""
 
@@ -836,6 +837,7 @@ msgstr ""
 
 #. module: ssi_rent
 #: model:ir.model.fields,field_description:ssi_rent.field_rent_order__period_type
+#: model_terms:ir.ui.view,arch_db:ssi_rent.rent_order_view_search
 msgid "Period Type"
 msgstr ""
 
@@ -882,6 +884,7 @@ msgstr ""
 
 #. module: ssi_rent
 #: model:ir.model.fields,field_description:ssi_rent.field_rent_order__product_id
+#: model_terms:ir.ui.view,arch_db:ssi_rent.rent_order_view_search
 #: model_terms:ir.ui.view,arch_db:ssi_rent.rent_type_view_form
 msgid "Product"
 msgstr ""
@@ -1168,6 +1171,7 @@ msgstr ""
 
 #. module: ssi_rent
 #: model:ir.model.fields,field_description:ssi_rent.field_rent_order__type_id
+#: model_terms:ir.ui.view,arch_db:ssi_rent.rent_order_view_search
 msgid "Type"
 msgstr ""
 
