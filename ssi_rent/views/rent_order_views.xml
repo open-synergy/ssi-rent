@@ -13,6 +13,34 @@
     <field name="mode">primary</field>
     <field name="arch" type="xml">
         <data>
+            <xpath expr="//field[@name='company_id']" position="after">
+                <field name="type_id" />
+                <field name="product_id" />
+                <field name="date" />
+                <field name="payment_term_id" />
+                <field name="journal_id" />
+            </xpath>
+            <xpath expr="//filter[@name='dom_my_data']" position="after">
+                <filter string="Date" name="filter_date" date="date" />
+            </xpath>
+            <xpath expr="//filter[@name='grp_state']" position="after">
+                <filter
+                        name="grp_type"
+                        string="Type"
+                        context="{'group_by':'type_id'}"
+                    />
+                <filter
+                        name="grp_product"
+                        string="Product"
+                        context="{'group_by':'product_id'}"
+                    />
+                <filter
+                        name="grp_period_type"
+                        string="Period Type"
+                        context="{'group_by':'period_type'}"
+                    />
+                <filter name="grp_date" string="Date" context="{'group_by':'date'}" />
+            </xpath>
         </data>
     </field>
 </record>
